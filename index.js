@@ -1,16 +1,18 @@
-let http = require("http");
-let url = require("url");
+let express = require("express");
+let cors = require("cors");
 
-
-let server = http.createServer((request,response)=>
-{ 
-    response.setHeader("Access-Control-Allow-Origin","*");
-    let dabba = url.parse(request.url,true);
-    if(dabba.pathname="/ping")
+let app = express();
+app.use(cors());
+app.get("/ping",(request,response)=>{response.send("hii")})
+app.get("/num",(request,response)=>{
+    let str =request.query.number;
+    let n = parseInt(str);
+    let fact=1
+    for(let i=1;i<=n;i++)
     {
-        response.end("Me Zinda hu");
+        fact=fact*i;
     }
-}
-);
+    response.send(`factorial:${fact}`)
+})
+app.listen(9000,()=>{console.log("Express is read")})
 
-server.listen(9000,()=>{console.log("Server Is Active.....")})
